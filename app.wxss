@@ -1,0 +1,18 @@
+@import "./styles/iconfonts.wxss";
+
+/* 在微信小程序中是不支持通配符的 */
+page,view,text,swiper,swiper-item,image,navigator {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 主题颜色通过 变量 来实现 */
+page {
+  --themeColor: #eb4450;
+  font-size: 28rpx;
+}
+
+image {
+  width: 100%;
+}

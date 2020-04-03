@@ -1,0 +1,46 @@
+<view>
+  <Searchinput></Searchinput>
+  
+  <view class="index_swiper">
+    <swiper autoplay indicator-dots circular>
+      <swiper-item 
+      wx:for="{{swiperList}}" 
+      wx:key="goods_id">
+        <navigator>
+          <image src="{{item.image_src}}" mode="widthFix"/>
+        </navigator>
+      </swiper-item>  
+    </swiper>
+  </view>
+
+  <view class="index_cate">
+    <navigator
+    wx:for="{{cateList}}"
+    wx:key="name">
+      <image src="{{item.image_src}}" mode="widthFix"/>  
+    </navigator>  
+  </view>
+    
+  <view class="index_floor">
+    <view class="floor_group"
+    wx:for="{{floorList}}"
+    wx:for-item="item1"
+    wx:key="floor_title">
+      <view class="floor_title">
+        <image mode="widthFix" src="{{item1.floor_title.image_src}}"/>
+      </view>
+
+      <view class="floor_list">
+        <navigator 
+        wx:for="{{item1.product_list}}"
+        wx:for-item="item2"
+        wx:for-index="index2"
+        wx:key="name"
+        >
+          <image src="{{item2.image_src}}" mode="{{index2==0?'widthFix':'scaleToFill'}}"/>    
+        </navigator> 
+      </view>
+    </view>
+  </view>
+     
+</view>
