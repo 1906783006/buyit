@@ -51,8 +51,6 @@ Page({
       url:"/goods/search",
       data: this.QueryParams
     });
-
-    console.log(res);
     // 设置总页码
     this.totalPages = Math.ceil(res.total / this.QueryParams.pagesize);
     // 设置数据
