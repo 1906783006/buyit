@@ -10,6 +10,7 @@ Page({
   data: {
     goodsDtail: {}
   },
+  goodsInfo: {},
 
   /**
    * 生命周期函数--监听页面加载
@@ -25,7 +26,8 @@ Page({
       url: "/goods/detail",
       data: param
     })
-    console.log(goodsDtail);
+    this.goodsInfo = goodsDtail;
+    console.log(this.goodsInfo);
     this.setData({
       goodsDtail: {
         pics: goodsDtail.pics,
@@ -41,6 +43,28 @@ Page({
     wx.previewImage({
       current: e.currentTarget.dataset.url, // 当前显示图片的http链接
       urls: this.data.goodsDtail.pics.map((x)=>x.pics_mid_url)
+    })
+  },
+
+  // 点击加入购物车
+  handleCartAdd() {
+    // 1.获取缓存中的购物车商品
+    let cart = wx.getStorageSync('cart') || [];
+    // 2.查询是否有这一个商品
+    let index = cart.findIndex(v => v.goods_id===this.goodsInfo.goods_id);
+    // 3.如果不存在则添加这个商品
+    if(index === -1) {
+      this.goodsInfo.num = 1;
+      cart.push(this.goodsInfo);
+    } else {
+      // 如果不存在则不需要添加商品，添加数量
+      cart[index].num++;
+    }
+    wx.setStorageSync('cart',cart);
+    wx.showToast({
+      title: '加入成功',
+      icon: 'success',
+      mask: true
     })
   }
 })

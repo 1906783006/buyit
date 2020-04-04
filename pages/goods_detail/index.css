@@ -55,12 +55,21 @@ page {
   display: flex;
 }
 .btm_tool .tool_item {
+  position: relative;
   flex: 1;
   display: flex;
   font-size: 20rpx;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.btm_tool .tool_item button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 .btm_tool .btn_cart {
   flex: 2;
