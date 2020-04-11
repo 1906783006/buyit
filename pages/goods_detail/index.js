@@ -27,7 +27,6 @@ Page({
       data: param
     })
     this.goodsInfo = goodsDtail;
-    console.log(this.goodsInfo);
     this.setData({
       goodsDtail: {
         pics: goodsDtail.pics,
@@ -55,6 +54,7 @@ Page({
     // 3.如果不存在则添加这个商品
     if(index === -1) {
       this.goodsInfo.num = 1;
+      this.goodsInfo.checked = true;
       cart.push(this.goodsInfo);
     } else {
       // 如果不存在则不需要添加商品，添加数量
