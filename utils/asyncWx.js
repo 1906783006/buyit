@@ -69,3 +69,18 @@ export const showToast = function ({title}) {
     })
   })
 } 
+
+// Promise形式login
+export const login = function () {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      timeout: 10000,
+      success: (result) => {
+        resolve(result);
+      },
+      fail: (err) => {
+        reject(err);
+      }
+    })
+  })
+} 
