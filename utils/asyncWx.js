@@ -84,3 +84,18 @@ export const login = function () {
     })
   })
 } 
+
+// Promise形式requestPayment
+export const requestPayment= function (pay) {
+  return new Promise((resolve, reject) => {
+    wx.requestPayment({
+      ...pay,
+      success (res) { 
+        resolve(res)
+      },
+      fail (err) { 
+        reject(err)
+      }
+    })
+  })
+} 

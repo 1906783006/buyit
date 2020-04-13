@@ -10,12 +10,16 @@
   3.支付按钮
     1.先判断缓存中有没有token
     2.如果没有，跳到授权页面，进行获取token
-    3.有，进行下一步
+    3.有，创建订单 获取到订单编号
+    4.已经完成微信支付
+    5.手动删除缓存中已经被选中的商品
+    6.删除后的购物车数据填充回缓存，跳转页面
  */
 
 
-import {getSetting,openSetting,chooseAddress,showModal,showToast} from "../../utils/asyncWx"
-import regeneratorRuntime from "../../lib/runtime/runtime";
+import {requestPayment,showToast} from "../../utils/asyncWx"
+import regeneratorRuntime from "../../lib/runtime/runtime"
+import {request} from "../../request/index"
 
 // pages/cart/cart.js
 Page({
@@ -60,17 +64,77 @@ Page({
   },
 
   // 点击结算
-  handleOrderPay() {
-    // 1.判断缓存中有没有token
-    const token = wx.getStorageSync("token")
-    // 2.判断
-    if(!token) {
+  async handleOrderPay() {
+    try {
+      // 1.判断缓存中有没有token
+      const token = wx.getStorageSync("token")
+      // 2.判断
+      if(!token) {
+        wx.navigateTo({
+          url: '/pages/auth/index'
+        });
+        return;
+      }
+      // 3.创建订单
+      // 3.1 准备创建订单要的请求参数
+      const header = {Authorization: token};
+      // 3.2 准备请求体参数
+      const order_price = this.data.totalPrice;
+      const consignee_addr = this.data.address.all;
+      const cart = this.data.cart;
+      let goods = [];
+      cart.forEach(v => {
+        goods.push({
+          goods_id: v.goods_id,
+          goods_number: v.num,
+          goods_price: v.goods_price
+        })
+      })
+      const orderParams = {order_price,consignee_addr,goods};
+      // 4.准备发送请求，获取订单编号
+      const {order_number} = await request({
+        url: "/my/orders/create",
+        method: "post",
+        data: orderParams,
+        header
+      })
+      // 5.发起预支付接口
+      const {pay} = await request({
+        url: "/my/orders/req_unifiedorder",
+        method: "post",
+        header,
+        data: {
+          order_number
+        }
+      })
+      // 6.发起微信支付
+      await requestPayment(pay);
+      // 7.查询后台 订单状态
+      const res = await request({
+        url: "/my/orders/chkOrder",
+        method: "post",
+        header,
+        data: {
+          order_number
+        }
+      })
+
+      showToast({title:'支付成功'})
+      // 8.删除缓存中已经支付了的商品
+      let newCart = wx.getStorageSync("cart");
+      newCart = newCart.filter(v=>!v.checked);
+      wx.getStorageSync("cart",newCart);
+      // 9,支付成功条转到订单页面
       wx.navigateTo({
-        url: '/pages/auth/index'
-      });
-      return;
+        url: "/pages/order/index"
+      })
+    } catch (error) {
+      showToast({title:'支付失败'})
+      console.log(error);
+      
     }
-    console.log('已经存在token');
-    
+
   }
+
+
 })
