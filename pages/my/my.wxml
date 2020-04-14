@@ -1,2 +1,1 @@
-<!--pages/my/my.wxml-->
-<text>pages/my/my.wxml</text>
+<navigator url="/pages/login/index">登录</navigator>
