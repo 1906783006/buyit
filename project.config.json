@@ -25,7 +25,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.10.3",
 	"appid": "wxea5b20fff2fc32b2",
-	"projectname": "mini-1",
+	"projectname": "%E4%B9%B0%E5%AE%83%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
@@ -110,6 +110,13 @@
 					"name": "个人中心",
 					"pathName": "pages/my/my",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单页面",
+					"pathName": "pages/order/index",
+					"query": "type=1",
 					"scene": null
 				}
 			]

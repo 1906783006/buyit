@@ -10,7 +10,8 @@
     "pages/goods_detail/index",
     "pages/pay/index",
     "pages/auth/index",
-    "pages/login/index"
+    "pages/login/index",
+    "pages/order/index"
   ], 
   "window": {
     "backgroundTextStyle": "dark",
