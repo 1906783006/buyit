@@ -8,25 +8,38 @@ Page({
    * 页面的初始数据
    */
   data: {
-    goodsDtail: {}
+    goodsDtail: {},
+    isCollect: false
   },
   goodsInfo: {},
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onShow: function () {
     // 请求对应商品详情数据
-    this.getGoodsDetail(options);
+    let page = getCurrentPages();
+    let currentPage = page[page.length-1];
+    let options = currentPage.options;
+    const goods_id = options.goods_id;
+  
+    this.getGoodsDetail(goods_id); 
+
+    //判断是否被收藏
+    const collect = wx.getStorageSync('collect');
+    this.setData({
+      isCollect: collect.some((v,i) => v.goods_id == goods_id)
+    })
+
   },
 
   //设置请求商品详情数据函数
-  async getGoodsDetail(param) {
+  async getGoodsDetail(goods_id) {
     var goodsDtail = await request({
       url: "/goods/detail",
-      data: param
+      data: {goods_id}
     })
-    this.goodsInfo = goodsDtail;
+    this.goodsInfo = goodsDtail; 
     this.setData({
       goodsDtail: {
         pics: goodsDtail.pics,
@@ -66,5 +79,43 @@ Page({
       icon: 'success',
       mask: true
     })
+  },
+
+  // 点击收藏商品
+  handleCollect(){
+    let isCollect=false;
+    // 1 获取缓存中的商品收藏数组
+    let collect=wx.getStorageSync("collect")||[];
+    // 2 判断该商品是否被收藏过
+    let index=collect.findIndex(v=>v.goods_id===this.goodsInfo.goods_id);
+    // 3 当index！=-1表示 已经收藏过 
+    if(index!==-1){
+      // 能找到 已经收藏过了  在数组中删除该商品
+      collect.splice(index,1);
+      isCollect=false;
+      wx.showToast({
+        title: '取消成功',
+        icon: 'success',
+        mask: true
+      });
+        
+    }else{
+      // 没有收藏过
+      collect.push(this.goodsInfo);
+      isCollect=true;
+      wx.showToast({
+        title: '收藏成功',
+        icon: 'success',
+        mask: true
+      });
+    }
+    // 4 把数组存入到缓存中
+    wx.setStorageSync("collect", collect);
+    // 5 修改data中的属性  isCollect
+    this.setData({
+      isCollect
+    })
+      
+      
   }
 })

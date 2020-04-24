@@ -89,3 +89,6 @@ page {
   font-weight: 700;
   background-color: #eb4450;
 }
+.icon-shoucang1 {
+  color: orangered;
+}
