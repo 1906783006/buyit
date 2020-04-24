@@ -1,12 +1,17 @@
-// pages/search/search.js
+import { request } from "../../request/index";
+import regeneratorRuntime from "../../lib/runtime/runtime";
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    inputValue: '',
+    searchList: [],
+    showCancle: false
   },
+
+  TimeId: -1,
 
   /**
    * 生命周期函数--监听页面加载
@@ -15,52 +20,45 @@ Page({
 
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+  // 输入框搜索
+  handleInput(e) {
+    let {value} = e.detail;
 
+    // 检查输入是否合法,如果不合法返回
+    if(!value.trim()) return;
+
+    //显示取消按钮
+    this.setData({
+      showCancle: true
+    })
+    
+    // 防抖操作
+    clearTimeout(this.TimeId);
+    this.TimeId=setTimeout(() => {
+      this.getSearchList(value);
+    }, 1000);
+    
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  //搜索请求商品数据
+  async getSearchList(value) {
+    const res = await request({
+      url: "/goods/qsearch",
+      data: {
+        query: value
+      }
+    })
+    this.setData({
+      searchList:res
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  // 点击取消搜索
+  handleCancel(e) {
+    this.setData({
+      inputValue: '',
+      searchList: [],
+      showCancle: false
+    })
   }
 })
