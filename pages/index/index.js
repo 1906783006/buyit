@@ -17,6 +17,7 @@ Page({
     this.getSwiperList();
     this.getCateList();
     this.getFloorList();
+    console.log(this.data);
   },
 
   // 获取轮播图数据
@@ -27,6 +28,7 @@ Page({
         swiperList: res
       })
     })
+    
   },
 
   // 获取分类导航数据

@@ -7,7 +7,7 @@
     "pages/my/my",
     "pages/search/search",
     "pages/good_list/index",
-    "pages/goods_detail/index",
+    "pages/goods_detail/main",
     "pages/pay/index",
     "pages/auth/index",
     "pages/login/index",
