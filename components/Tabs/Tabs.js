@@ -26,6 +26,7 @@ Component({
       const {index} = e.currentTarget.dataset;
       //触发父组件中的事件自定义
       this.triggerEvent("tabsItemChange", {index});
+      
     }
   }
 })

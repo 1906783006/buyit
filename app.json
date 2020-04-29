@@ -11,7 +11,8 @@
     "pages/pay/index",
     "pages/auth/index",
     "pages/login/index",
-    "pages/order/index"
+    "pages/order/index",
+    "pages/feedback/index"
   ], 
   "window": {
     "backgroundTextStyle": "dark",

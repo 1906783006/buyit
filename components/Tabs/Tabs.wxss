@@ -1,5 +1,7 @@
+
 .tabs_title {
   display: flex;
+  background-color: #fff;
 }
 .tabs_title .title_item {
   flex: 1;
